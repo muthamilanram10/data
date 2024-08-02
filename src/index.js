@@ -10,19 +10,23 @@ app.use(cors());
 
 app.get('/orders', async (req, res) => {
   try {
+    // Query the database
     const [rows] = await db.query(`
-          SELECT 
-              o.order_identifier, 
-              o.delivery_mode, 
-              o.amount_paid, 
-              o.order_sent, 
-              o.order_wish, 
-              o.order_expected, 
-              o.order_date, 
-              c.customer_name
-          FROM orders o
-          JOIN customers c ON o.customer_id = c.customer_id
-      `);
+      SELECT 
+        o.order_id,            
+        o.customer_id,          
+        o.customer_name,       
+        o.order_identifier, 
+        o.delivery_mode, 
+        o.amount_paid, 
+        o.order_sent, 
+        o.order_wish, 
+        o.order_expected, 
+        o.order_date, 
+        c.customer_name
+      FROM orders o
+      JOIN customers c ON o.customer_id = c.customer_id
+    `);
 
     res.json(rows);
   } catch (error) {
